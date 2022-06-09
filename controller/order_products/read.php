@@ -4,35 +4,35 @@ header("Content-Type: application/json; charset=UTF-8");
 
 // Include database.php and book.php in order to use them
 include_once '../config/database.php';
-include_once '../models/singleorder.php';
+include_once '../models/order_products.php';
 
 // Create a new Database object and connect to our database
 $database = new Database();
 $db = $database->getConnection();
 
 // Create a new Single Order object
-$singleorder = new SingleOrder($db);
+$order_products = new OrderProducts($db);
 
-// query singleorders
-$stmt = $singleorder->read();
+// query order_productss
+$stmt = $order_products->read();
 $num = $stmt->rowCount();
 
-// if any singleorder are found in the database
+// if any order_products are found in the database
 if($num>0){
     // Single Order array
-    $singleorder_arr = array();
-    $singleorder_arr["records"] = array();
+    $order_products_arr = array();
+    $order_products_arr["records"] = array();
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
         extract($row);
-        $singleorder_item = array(
-            "idorder" => $idorder,
-            "idproduct" => $idproduct,
+        $order_products_item = array(
+            "id_order" => $id_order,
+            "id_product" => $id_product,
             "quantity" => $quantity
         );
-        array_push($singleorder_arr["records"], $singleorder_item);
+        array_push($order_products_arr["records"], $order_products_item);
     }
     http_response_code(200); 
-    echo json_encode($singleorder_arr);
+    echo json_encode($order_products_arr);
 }else{
     http_response_code(404); 
     echo json_encode(

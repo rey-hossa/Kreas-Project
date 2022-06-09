@@ -3,40 +3,40 @@ header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
 
 // Include database.php and book.php in order to use them
-include_once '../config/database.php';
-include_once '../models/product.php';
+include_once 'core/database.php';
+include_once 'models/order.php';
 
 // Create a new Database object and connect to our database
 $database = new Database();
 $db = $database->getConnection();
 
-// Create a new Product object
-$product = new Product($db);
+// Create a new Order object
+$order = new Order($db);
 
-// query products
-$stmt = $product->read();
+// query orders
+$stmt = $order->read();
 $num = $stmt->rowCount();
 
-// if any products are found in the database
+// if any orders are found in the database
 if($num>0){
-    // product array
-    $product_arr = array();
-    $product_arr["records"] = array();
+    // orders array
+    $order_arr = array();
+    $order_arr["records"] = array();
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
         extract($row);
-        $product_item = array(
+        $order_item = array(
             "id" => $id,
-            "name" => $name,
-            "co2" => $co2
+            "date" => $date,
+            "dest_country" => $dest_country
         );
-        array_push($product_arr["records"], $product_item);
+        array_push($order_arr["records"], $order_item);
     }
     http_response_code(200); 
-    echo json_encode($product_arr);
+    echo json_encode($order_arr);
 }else{
     http_response_code(404); 
     echo json_encode(
-        array("message" => "No Product Found.")
+        array("message" => "No Order Found.")
     );
 }
 ?>

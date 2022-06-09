@@ -6,8 +6,8 @@ header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
  
-include_once '../config/database.php';
-include_once '../models/order.php';
+include_once 'core/database.php';
+include_once 'models/order.php';
  
 $database = new Database();
 $db = $database->getConnection();
@@ -16,11 +16,11 @@ $data = json_decode(file_get_contents("php://input"));
 if(
     !empty($data->id) &&
     !empty($data->date) &&
-    !empty($data->destcountry)
+    !empty($data->dest_country)
 ){
     $order->Id = $data->id;
     $order->Date = $data->date;
-    $order->DestCountry = $data->destcountry;
+    $order->DestCountry = $data->dest_country;
  
     if($order->create()){
         http_response_code(201);

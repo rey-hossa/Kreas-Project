@@ -7,18 +7,18 @@ header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
  
 include_once '../config/database.php';
-include_once '../models/singleorder.php';
+include_once '../models/order_products.php';
  
 $database = new Database();
 $db = $database->getConnection();
  
-$singleorder = new SingleOrder($db);
+$order_products = new OrderProducts($db);
  
 $data = json_decode(file_get_contents("php://input"));
  
-$singleorder->IdOrder = $data->idorder;
+$order_products->IdOrder = $data->id_order;
  
-if($singleorder->delete()){
+if($order_products->delete()){
     http_response_code(200);
     echo json_encode(array("risposta" => "The Single Order has been eliminated"));
 }else{

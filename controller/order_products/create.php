@@ -7,22 +7,22 @@ header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
  
 include_once '../config/database.php';
-include_once '../models/singleorder.php';
+include_once '../models/order_products.php';
  
 $database = new Database();
 $db = $database->getConnection();
-$singleorder = new SingleOrder($db);
+$order_products = new OrderProducts($db);
 $data = json_decode(file_get_contents("php://input"));
 if(
-    !empty($data->idorder) &&
-    !empty($data->idproduct) &&
+    !empty($data->id_order) &&
+    !empty($data->id_product) &&
     !empty($data->quantity)
 ){
-    $singleorder->IdOrder = $data->idorder;
-    $singleorder->IdProduct = $data->idproduct;
-    $singleorder->Quantity = $data->quantity;
+    $order_products->IdOrder = $data->id_order;
+    $order_products->IdProduct = $data->id_product;
+    $order_products->Quantity = $data->quantity;
  
-    if($singleorder->create()){
+    if($order_products->create()){
         http_response_code(201);
         echo json_encode(array("message" => "Single Order created successfully."));
     }

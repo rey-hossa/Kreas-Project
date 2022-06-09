@@ -7,23 +7,25 @@ header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
  
 include_once '../config/database.php';
-include_once '../models/product.php';
+include_once '../models/order_products.php';
  
 $database = new Database();
 $db = $database->getConnection();
  
-$product = new Product($db);
+$order_products = new OrderProducts($db);
  
 $data = json_decode(file_get_contents("php://input"));
  
-$product->Id = $data->id;
+$order_products->IdOrder = $data->id_order;
+$order_products->IdProduct = $data->id_product;
+$order_products->Quantity = $data->quantity;
  
-if($product->delete()){
+if($order_products->update()){
     http_response_code(200);
-    echo json_encode(array("risposta" => "The product has been removed."));
+    echo json_encode(array("risposta" => "Single Order updated"));
 }else{
     //503 service unavailable
     http_response_code(503);
-    echo json_encode(array("risposta" => "Unable to delete the product."));
+    echo json_encode(array("risposta" => "Unable to update the Single Order"));
 }
 ?>

@@ -1,6 +1,6 @@
 <?php
-class Product
-	{
+
+class Product{
 	private $conn;
 	private $table_name = "products";
 	// proprietà di un libro
@@ -112,5 +112,5 @@ class Product
 	}
 	 
 
-	}
+}
 ?>

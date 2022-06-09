@@ -2,9 +2,8 @@
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
 
-include_once '../config/database.php';
+include_once 'core/database.php';
 
-// Create a new Database object and connect to our database
 $database = new Database();
 $db = $database->getConnection();
 
@@ -12,9 +11,14 @@ $db = $database->getConnection();
 function queryExecute($conn){
 		// select all
 		$query = "SELECT
-                        sum(round((products.co2 * singleorder.quantity))) as co2tot
+                        orders.dest_country, sum(round((products.co2 * order_products.quantity))) as co2tot
                     FROM
-                    products join singleorder on products.id = singleorder.idProduct" ;
+                        products 
+                        join order_products on products.id = order_products.id_product
+                        join orders on order_products.id_order = orders.Id
+                    group by orders.dest_country" 
+                        
+        ;
 		$stmt = $conn->prepare($query);
 		// execute query
 		$stmt->execute();
@@ -25,7 +29,6 @@ function queryExecute($conn){
 $stmt = queryExecute($db);
 $num = $stmt->rowCount();
 
-
 if($num>0){
     
     $query_arr = array();
@@ -33,6 +36,7 @@ if($num>0){
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
         extract($row);
         $query_item = array(
+            "dest_country" => $dest_country,
             "co2tot" => $co2tot
         );
         array_push($query_arr["records"], $query_item);

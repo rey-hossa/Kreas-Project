@@ -5,7 +5,7 @@ header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-include_once '../config/database.php';
+include_once 'core/database.php';
 
 $database = new Database();
 $db = $database->getConnection();
@@ -19,20 +19,20 @@ $end_date = $data->end_date;
 function queryExecute($conn, $start_date, $end_date){
 
 		$query = "SELECT
-                        sum(round((products.co2 * singleorder.quantity))) as co2tot
+                        sum(round((products.co2 * order_products.quantity))) as co2tot
                     FROM
                      products 
-                        join singleorder on products.id = singleorder.idProduct 
-                        join orders on singleorder.idOrder = orders.Id
+                        join order_products on products.id = order_products.id_product 
+                        join orders on order_products.id_order = orders.Id
                      where orders.date between '{$start_date}' and '{$end_date}' " ;
         
 
         // $query = "SELECT
-        //                 sum(round((products.co2 * singleorder.quantity))) as co2tot
+        //                 sum(round((products.co2 * order_products.quantity))) as co2tot
         //             FROM
         //              products 
-        //                 join singleorder on products.id = singleorder.idProduct 
-        //                 join orders on singleorder.idOrder = orders.Id
+        //                 join order_products on products.id = order_products.id_product 
+        //                 join orders on order_products.id_order = orders.Id
         //              where orders.date between '2022-02-01' and '2022-02-28' ;"   
         // ;
 

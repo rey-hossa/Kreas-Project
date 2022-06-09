@@ -1,8 +1,8 @@
 <?php
-class SingleOrder
-	{
+
+class OrderProducts{
 	private $conn;
-	private $table_name = "singleorder";
+	private $table_name = "order_products";
 
 	public $IdOrder;
 	public $IdProduct;
@@ -12,11 +12,11 @@ class SingleOrder
 		$this->conn = $db;
 	}
 
-	// READ SINGLEORDER
+	// READ order_products
 	function read(){
 		// select all
 		$query = "SELECT
-                        idorder, idproduct, quantity
+                        id_order, id_product, quantity
                     FROM
                      $this->table_name" ;
 		$stmt = $this->conn->prepare($query);
@@ -25,14 +25,14 @@ class SingleOrder
 		return $stmt;
 	}
 
-	// CREATE SINGLEORDER
+	// CREATE order_products
 
 	function create(){
  
 		$query = "INSERT INTO
 					" . $this->table_name . "
 				SET
-                    idorder=:idorder, idproduct=:idproduct, quantity=:quantity; " ;
+				id_order=:id_order, id_product=:id_product, quantity=:quantity; " ;
 	 
 		$stmt = $this->conn->prepare($query);
 	 
@@ -42,8 +42,8 @@ class SingleOrder
 		$this->Quantity = htmlspecialchars(strip_tags($this->Quantity));
 	 
 		// binding
-		$stmt->bindParam(":idorder", $this->IdOrder);
-		$stmt->bindParam(":idproduct", $this->IdProduct);
+		$stmt->bindParam(":id_order", $this->IdOrder);
+		$stmt->bindParam(":id_product", $this->IdProduct);
 		$stmt->bindParam(":quantity", $this->Quantity);
 	 
 		// execute query
@@ -55,17 +55,17 @@ class SingleOrder
 		 
 	}
 
-	// UPDATE ORDER
+	// UPDATE order_products
 
 	function update(){
  
 		$query = "UPDATE
 					" . $this->table_name . "
 				SET
-                    idproduct = :idproduct,
+					id_product = :id_product,
                     quantity = :quantity
 				WHERE
-                    idorder = :idorder";
+					id_order = :id_order";
 	 
 		$stmt = $this->conn->prepare($query);
 	 
@@ -74,8 +74,8 @@ class SingleOrder
 		$this->Quantity = htmlspecialchars(strip_tags($this->Quantity));
 	 
 		// binding
-		$stmt->bindParam(":idorder", $this->IdOrder);
-		$stmt->bindParam(":idproduct", $this->IdProduct);
+		$stmt->bindParam(":id_order", $this->IdOrder);
+		$stmt->bindParam(":id_product", $this->IdProduct);
 		$stmt->bindParam(":quantity", $this->Quantity);
 	 
 		// execute the query
@@ -86,11 +86,11 @@ class SingleOrder
 		return false;
 	}
 
-	// DELETE ORDER
+	// DELETE order_products
 
 	function delete(){
  
-		$query = "DELETE FROM " . $this->table_name . " WHERE idorder = ?";
+		$query = "DELETE FROM " . $this->table_name . " WHERE id_order = ?";
 	 
 	 
 		$stmt = $this->conn->prepare($query);
@@ -110,5 +110,6 @@ class SingleOrder
 	}
 	 
 
-	}
+}
+
 ?>

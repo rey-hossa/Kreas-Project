@@ -1,6 +1,6 @@
 <?php
-class Order
-	{
+
+class Order{
 	private $conn;
 	private $table_name = "orders";
 
@@ -16,7 +16,7 @@ class Order
 	function read(){
 		// select all
 		$query = "SELECT
-                        id, date, destcountry
+                        id, date, dest_country
                     FROM
                      $this->table_name" ;
 		$stmt = $this->conn->prepare($query);
@@ -33,7 +33,7 @@ class Order
 		$query = "INSERT INTO
 					" . $this->table_name . "
 				SET
-					id=:id, date=:date, destcountry=:destcountry; " ;
+					id=:id, date=:date, dest_country=:dest_country; " ;
 	 
 	   
 		$stmt = $this->conn->prepare($query);
@@ -46,7 +46,7 @@ class Order
 		// binding
 		$stmt->bindParam(":id", $this->Id);
 		$stmt->bindParam(":date", $this->Date);
-		$stmt->bindParam(":destcountry", $this->DestCountry);
+		$stmt->bindParam(":dest_country", $this->DestCountry);
 	 
 		// execute query
 		if($stmt->execute()){
@@ -65,7 +65,7 @@ class Order
 					" . $this->table_name . "
 				SET
 					date = :date,
-					destcountry = :destcountry
+					dest_country = :dest_country
 				WHERE
 					id = :id";
 	 
@@ -78,7 +78,7 @@ class Order
 		// binding
 		$stmt->bindParam(":id", $this->Id);
 		$stmt->bindParam(":date", $this->Date);
-		$stmt->bindParam(":destcountry", $this->DestCountry);
+		$stmt->bindParam(":dest_country", $this->DestCountry);
 	 
 		// execute the query
 		if($stmt->execute()){
@@ -112,5 +112,6 @@ class Order
 	}
 	 
 
-	}
+}
+
 ?>
